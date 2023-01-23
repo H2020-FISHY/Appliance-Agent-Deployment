@@ -1,0 +1,9 @@
+---
+services_host: "{{ hostvars[groups['services'][0]]['public_ip'] }}"
+wazuh_host: '192.168.55.11'
+rabbit_host: '192.168.55.10'
+
+appliance_agent_host: '192.168.55.11:10010'
+
+service_config_dir: '$HOME/appliance'
+service_build_dir: "{{ service_config_dir }}/builds"

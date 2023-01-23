@@ -1,0 +1,16 @@
+---
+- hosts: docker
+  become: yes
+  pre_tasks:
+    - import_tasks: "{{ ansible_dir }}/globals/vars.yml"
+  roles:
+    - role: docker-engine
+      as_system_service: True
+
+- hosts: services
+  become: yes
+  tasks:
+    - name: install make for image building
+      yum:
+        name: make
+        state: present

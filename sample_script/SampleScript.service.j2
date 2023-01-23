@@ -1,0 +1,9 @@
+[Unit]
+ Description=Sample Appliance script service
+
+[Service]
+ Environment=APPLIANCE_TARGET={{ appliance_agent_host }}/collector/sample
+ ExecStart=/bin/sh -c /root/appliance/builds/sample_script/sample_script.sh
+
+[Install]
+ WantedBy=default.target

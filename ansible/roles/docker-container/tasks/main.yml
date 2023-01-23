@@ -1,0 +1,31 @@
+---
+- meta: end_play
+  when: dev_service is defined and dev_service and (dev_mode is not defined or not dev_mode)
+
+- name: set altered service name as default
+  set_fact: service_name_altered="{{ service_name }}"
+
+- name: set prefix to altered service name
+  set_fact: service_name_altered="{{ service_prefix }}{{ service_name_altered }}"
+  when: service_prefix is defined
+
+- name: set psotfix to altered service name
+  set_fact: service_name_altered="{{ service_name_altered }}{{ service_postfix }}"
+  when: service_postfix is defined
+
+- import_tasks: configs/copy_config.yml
+  when: service_has_config is defined and service_has_config
+
+- import_tasks: configs/copy_configs.yml
+  when: service_has_configs is defined and service_has_configs
+
+- import_tasks: facts/common.yml
+
+- import_tasks: service.yml
+  when: service_type is defined and service_type == 'service'
+
+- import_tasks: docker.yml
+  when: service_type is defined and service_type == 'docker'
+
+- import_tasks: swarm.yml
+  when: service_type is undefined or service_type == 'swarm'

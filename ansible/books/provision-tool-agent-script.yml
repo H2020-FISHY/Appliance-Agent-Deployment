@@ -1,0 +1,30 @@
+---
+- hosts: services
+  become: yes
+  pre_tasks:
+    - import_tasks: "{{ ansible_dir }}/globals/vars.yml"
+  tasks:
+    - name: create directory for script
+      file:
+        path: "{{ service_build_dir }}/sample_script"
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+    - name: copy script to host
+      copy:
+        src: "{{ ansible_dir }}/../sample_script/sample_script.sh"
+        dest: "{{ service_build_dir }}/sample_script/sample_script.sh"
+        mode: 0755
+    - name: configure template and copy service file
+      template:
+        src: "{{ ansible_dir }}/../sample_script/SampleScript.service.j2"
+        dest: /usr/lib/systemd/system/SampleScript.service
+        mode: 644
+        owner: root
+        group: root
+    - name: reload systemd daemon
+      shell: systemctl daemon-reload
+    - name: start service
+      shell: systemctl start SampleScript
+    

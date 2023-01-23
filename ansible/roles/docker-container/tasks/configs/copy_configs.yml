@@ -1,0 +1,17 @@
+---
+- name: create config dirs
+  become: yes
+  file:
+    path: "{{ service_config_dir }}/{{ service_name_altered }}{{ item.path | dirname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  with_items: "{{ service_configs }}"
+
+- name: copy configs templates to remote host
+  template:
+    src: "{{ ansible_dir }}/../config/{{ service_name }}{{ item.path }}.j2"
+    dest: "{{ service_config_dir }}/{{ service_name_altered }}{{ item.path }}"
+    mode: "{{ '0644' if item.permissions is not defined else item.permissions }}"
+  with_items: "{{ service_configs }}"

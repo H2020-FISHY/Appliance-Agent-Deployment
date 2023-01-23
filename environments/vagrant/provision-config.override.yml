@@ -1,0 +1,3 @@
+---
+scp_user: vagrant
+scp_base_dir: /tmp/task_files/

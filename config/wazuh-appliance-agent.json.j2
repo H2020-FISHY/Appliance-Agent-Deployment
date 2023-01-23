@@ -1,0 +1,11 @@
+{
+    "rmq_user": "guest",
+    "rmq_password": "guest",
+    "rmq_ip": "{{ rabbit_host }}",
+    "rmq_port": 5672,
+    "exchange_name": "sample-logs",
+    "exchange_type": "fanout",
+    "target_ip": "{{ wazuh_host }}",
+    "target_port": 514,
+    "transp": "udp"
+}

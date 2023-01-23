@@ -1,0 +1,15 @@
+- hosts: services
+  become: yes
+  pre_tasks:
+    - import_tasks: "{{ ansible_dir }}/globals/vars.yml"
+  roles:
+    - role: image-build
+      service_name: rmq-receiver
+    - role: docker-container
+      service_name: wazuh-appliance-agent
+      service_type: 'docker'
+      service_has_config: True
+      service_config_format: json
+      service_config_path: /service/config/config.json
+      service_image: "rmq-receiver:v0.0.1"
+      service_use_local_image: True

@@ -1,0 +1,16 @@
+---
+- name: create config path
+  become: yes
+  file:
+    path: "{{ service_config_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: copy config template to remote host
+  template:
+    src: "{{ ansible_dir }}/../config/{{ service_name }}.{{ service_config_format }}.j2"
+    dest: "{{ service_config_dir }}/{{ service_name_altered }}.{{ service_config_format }}"
+    mode: 0644
+  register: config_changed

@@ -1,0 +1,30 @@
+---
+- name: create config path
+  become: yes
+  file:
+    path: "{{ service_config_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: create build path
+  become: yes
+  file:
+    path: "{{ service_build_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: copy directory to host
+  become: yes
+  copy:
+    src: "{{ ansible_dir }}/../{{ service_name }}"
+    dest: "{{ service_build_dir }}"
+    mode: 0755
+
+- name: build image
+  shell: make build
+  args:
+    chdir: "{{ service_build_dir }}/{{ service_name }}"
